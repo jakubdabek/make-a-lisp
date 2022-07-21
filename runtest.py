@@ -307,8 +307,7 @@ while t.next():
         elif (t.ret == "" and t.out == ""):
             log(" -> SUCCESS (result ignored)")
             pass_cnt += 1
-        elif (re.search(expects[0], res, re.S) or
-                re.search(expects[1], res, re.S)):
+        elif any(re.search(expect, res, re.S) for expect in expects):
             log(" -> SUCCESS")
             pass_cnt += 1
         else:
