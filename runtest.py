@@ -282,13 +282,18 @@ while t.next():
 
     if t.form == None: continue
 
-    log("TEST: %s -> [%s,%s]" % (repr(t.form), repr(t.out), t.ret), end='')
+    log("TEST: %s -> [%s,%s]" % (repr(t.form), repr(t.out), repr(t.ret)), end="")
 
     # The repeated form is to get around an occasional OS X issue
     # where the form is repeated.
     # https://github.com/kanaka/mal/issues/30
-    expects = [".*%s%s%s" % (sep, t.out, re.escape(t.ret)),
-               ".*%s.*%s%s%s" % (sep, sep, t.out, re.escape(t.ret))]
+    if args.no_pty:
+        expects = ["%s%s" % (t.out, re.escape(t.ret))]
+    else:
+        expects = [
+            ".*%s%s%s" % (sep, t.out, re.escape(t.ret)),
+            ".*%s.*%s%s%s" % (sep, sep, t.out, re.escape(t.ret)),
+        ]
 
     r.writeline(t.form)
     try:
